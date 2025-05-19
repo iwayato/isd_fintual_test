@@ -19,23 +19,6 @@ ALLOWED_EXTENSIONS = {'csv'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def calculate_cvar(returns, weights, confidence_level=0.95):
-    """
-    Calcula el CVaR (Conditional Value at Risk) para un portafolio.
-    
-    Args:
-        returns (pd.DataFrame): DataFrame con los retornos diarios
-        weights (np.array): Pesos de los activos en el portafolio
-        confidence_level (float): Nivel de confianza (default: 0.95)
-    
-    Returns:
-        float: Valor del CVaR
-    """
-    portfolio_returns = returns.dot(weights)
-    var = np.percentile(portfolio_returns, 100 * (1 - confidence_level))
-    cvar = portfolio_returns[portfolio_returns <= var].mean()
-    return cvar
-
 def black_litterman_cvar_optimization(returns, risk_level, max_weight=1.0, risk_aversion=2.5, tau=0.05, view_confidence=None, market_views=None):
     """
     Implementa el modelo Black-Litterman con restricciones de CVaR.
